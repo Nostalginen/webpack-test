@@ -1,0 +1,38 @@
+/**
+    BREAKPOINTS
+    @include breakpoint(breakpointname){ *styles* }
+
+    desktop: > 1120px / 70em
+    laptop: > 1024px / 60em
+    tablet: > 800px / 50em
+    phablet: > 600px / 37.5em
+    mobileonly: < 600px / 37.5em
+*/
+@mixin breakpoint($point) {
+  @if $point == desktop {
+    // 1120px
+    @media (min-width: 70em) {
+      @content;
+    }
+  } @else if $point == laptop {
+    // 1024px
+    @media (min-width: 64em) {
+      @content;
+    }
+  } @else if $point == tablet {
+    // 800px
+    @media (min-width: 50em) {
+      @content;
+    }
+  } @else if $point == phablet {
+    // 600px
+    @media (min-width: 37.5em) {
+      @content;
+    }
+  } @else if $point == mobileonly {
+    // 600px
+    @media (max-width: 37.5em) {
+      @content;
+    }
+  }
+}

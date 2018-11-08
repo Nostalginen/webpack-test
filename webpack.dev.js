@@ -1,37 +1,24 @@
-/* eslint-disable */
-const path = require('path');
+const merge = require('webpack-merge')
+const common = require('./webpack.common.js')
 const HtmlWebPackPlugin = require('html-webpack-plugin')
-const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
-const devMode = process.env.NODE_ENV !== 'production'
-const autoprefixer = require('autoprefixer')
+const Dotenv = require('dotenv-webpack')
 
+const dotenvPlugin = new Dotenv()
 const cleanPlugin = new CleanWebpackPlugin(['dist'])
-
 const htmlPlugin = new HtmlWebPackPlugin({
   template: './src/index.html',
   filename: './index.html'
 })
 
-module.exports = {
-  optimization: {
-    noEmitOnErrors: false
-  },
-  output: {
-    publicPath: '/',
-    filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist')
-  },
+module.exports = merge(common, {
+  mode: 'development',
+  devtool: 'inline-source-map',
   devServer: {
-    historyApiFallback: true
+    historyApiFallback: {
+      disableDotRule: true
+    }
   },
-  devtool: !devMode ? 'source-map' : '',
-  plugins: [
-    new MiniCssExtractPlugin({
-      filename: devMode ? '[name].css' : '[name].[hash].css',
-      chunkFilename: devMode ? '[id].css' : '[id].[hash].css'
-    })
-  ],
   module: {
     rules: [
       {
@@ -50,7 +37,7 @@ module.exports = {
       {
         test: /\.(sa|sc|c)ss$/,
         use: [
-          devMode ? 'style-loader' : MiniCssExtractPlugin.loader,
+          'style-loader',
           {
             loader: 'css-loader',
             options: {
@@ -58,7 +45,6 @@ module.exports = {
               sourceMap: true
             }
           },
-          { loader: 'postcss-loader', options: { plugins: [autoprefixer] } },
           {
             loader: 'sass-loader',
             options: {
@@ -100,5 +86,5 @@ module.exports = {
       }
     ]
   },
-  plugins: [cleanPlugin, htmlPlugin]
-}
+  plugins: [dotenvPlugin, cleanPlugin, htmlPlugin]
+})

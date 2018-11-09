@@ -14,8 +14,8 @@
     ]
   },
   "scripts": {
-    "start": "webpack-dev-server --open --color --hot --config webpack.dev.js",
-    "build": "webpack --config webpack.prod.js",
+    "start": "webpack-dev-server --progress --open --color --hot --config webpack.dev.js",
+    "build": "webpack --progress --config webpack.prod.js",
     "eslint": "eslint --fix ./src",
     "prettier": "prettier --write 'src/**/*.{js,scss}'",
     "pretty-quick": "pretty-quick --staged"

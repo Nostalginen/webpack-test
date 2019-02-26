@@ -2,17 +2,24 @@
  * CSS Reset
  */
 
+@import 'variables.scss';
+
 $default-font-family: 'Roboto', sans-serif;
-$default-text-color: #000;
+$default-text-color: $default-text-color;
 $default-font-size: 16px;
 $default-line-height: 1.5;
-$default-link-color: #007bff;
-$default-link-hover: #0056b3;
+$default-link-color: #10a7d4;
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+}
+
+body,
+html {
+  height: 100%;
+  min-height: 100%;
 }
 
 html {
@@ -41,6 +48,12 @@ section {
   display: block;
 }
 
+span,
+i,
+a {
+  display: inline-block;
+}
+
 body {
   margin: 0;
   font-family: $default-font-family;
@@ -51,7 +64,6 @@ body {
   color: $default-text-color;
   text-align: left;
   background-color: #fff;
-  background-image: url('../images/bg.jpg');
   background-size: cover;
 }
 
@@ -158,7 +170,6 @@ a {
 }
 
 a:hover {
-  color: $default-link-hover;
   text-decoration: underline;
 }
 
@@ -225,7 +236,7 @@ th {
 
 label {
   display: inline-block;
-  margin-bottom: 8px;
+  margin-bottom: 12.8px;
 }
 
 button {

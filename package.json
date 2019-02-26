@@ -63,17 +63,12 @@
     "webpack": "^4.20.2",
     "webpack-cli": "^3.1.2",
     "webpack-dev-server": "^3.1.9",
-    "webpack-merge": "^4.1.4"
+    "webpack-merge": "^4.1.4",
+    "terser-webpack-plugin": "^1.2.3"
   },
   "dependencies": {
-    "mobx": "4.5.1",
-    "mobx-react": "^5.3.5",
-    "mobx-utils": "^5.0.4",
     "prop-types": "^15.6.2",
     "react": "^16.5.2",
-    "react-dom": "^16.5.2",
-    "react-intl": "^2.7.2",
-    "react-router": "^4.3.1",
-    "react-router-dom": "^4.3.1"
+    "react-dom": "^16.5.2"
   }
 }

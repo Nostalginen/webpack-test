@@ -1,24 +1,13 @@
-const path = require('path')
-const HtmlWebPackPlugin = require('html-webpack-plugin')
 const CleanWebpackPlugin = require('clean-webpack-plugin')
 const Dotenv = require('dotenv-webpack')
 
 const dotenvPlugin = new Dotenv()
 const cleanPlugin = new CleanWebpackPlugin(['dist'])
-const htmlPlugin = new HtmlWebPackPlugin({
-  template: './src/index.html',
-  filename: './index.html'
-})
 
 module.exports = {
-  plugins: [dotenvPlugin, cleanPlugin, htmlPlugin],
+  plugins: [dotenvPlugin, cleanPlugin],
   optimization: {
-    noEmitOnErrors: false
-  },
-  output: {
-    publicPath: '/',
-    filename: '[name].[hash].js',
-    path: path.resolve(__dirname, 'dist')
+    noEmitOnErrors: false,
   },
   module: {
     rules: [
@@ -29,39 +18,36 @@ module.exports = {
           {
             loader: 'css-loader',
             options: {
-              importLoaders: 1,
-              sourceMap: true
-            }
+              sourceMap: true,
+            },
           },
           {
             loader: 'sass-loader',
-            options: {
-              sourceMap: true
-            }
           },
           {
             loader: 'sass-resources-loader',
             options: {
               resources: [
                 './src/assets/styles/variables.scss',
-                './src/assets/styles/breakpoints.scss'
-              ]
-            }
-          }
-        ]
+                './src/assets/styles/breakpoints.scss',
+                './src/assets/styles/icons.scss',
+              ],
+            },
+          },
+        ],
       },
       {
         enforce: 'pre',
         test: /\.js$/,
         exclude: /node_modules/,
-        loader: 'eslint-loader'
+        loader: 'eslint-loader',
       },
       {
         test: /\.js$/,
         exclude: /node_modules/,
         use: {
-          loader: 'babel-loader'
-        }
+          loader: 'babel-loader',
+        },
       },
       {
         test: /\.(png|jpg|gif|svg|jpeg)$/i,
@@ -70,10 +56,10 @@ module.exports = {
             loader: 'url-loader',
             options: {
               limit: 50000,
-              outputPath: 'assets/images/'
-            }
-          }
-        ]
+              outputPath: 'assets/images/',
+            },
+          },
+        ],
       },
       {
         test: /\.(ttf|eot|woff|woff2)$/,
@@ -81,10 +67,10 @@ module.exports = {
           loader: 'file-loader',
           options: {
             name: 'fonts/[name].[ext]',
-            outputPath: 'assets/'
-          }
-        }
-      }
-    ]
-  }
+            outputPath: 'assets/',
+          },
+        },
+      },
+    ],
+  },
 }

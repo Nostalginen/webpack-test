@@ -1,15 +1,50 @@
+const webpack = require('webpack')
 const merge = require('webpack-merge')
 const common = require('./webpack.common.js')
 const autoprefixer = require('autoprefixer')
 const cssnano = require('cssnano')
-const MinifyPlugin = require('babel-minify-webpack-plugin')
 const pxtorem = require('postcss-pxtorem')
-const minifyPlugin = new MinifyPlugin({}, { comments: false })
+const TerserPlugin = require('terser-webpack-plugin')
+const HtmlWebPackPlugin = require('html-webpack-plugin')
+const path = require('path')
+
+const htmlPlugin = new HtmlWebPackPlugin({
+  template: './src/templates/prod.html',
+  filename: './index.html',
+})
+
+const hashPlugin = new webpack.HashedModuleIdsPlugin({
+  hashFunction: 'sha256',
+  hashDigest: 'hex',
+  hashDigestLength: 20,
+})
 
 module.exports = merge.smart(common, {
+  output: {
+    publicPath: '/',
+    filename: '[name].[chunkhash].js',
+    path: path.resolve(__dirname, 'dist'),
+  },
+  plugins: [htmlPlugin, hashPlugin],
   mode: 'production',
   optimization: {
-    minimizer: [minifyPlugin]
+    minimizer: [
+      new TerserPlugin({
+        cache: true,
+        parallel: true,
+        terserOptions: { output: { comments: false } },
+      }),
+    ],
+    runtimeChunk: 'single',
+    splitChunks: {
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name: 'vendors',
+          chunks: 'all',
+        },
+      },
+    },
   },
   devtool: '',
   module: {
@@ -22,30 +57,30 @@ module.exports = merge.smart(common, {
             loader: 'css-loader',
             options: {
               importLoaders: 1,
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
           {
             loader: 'postcss-loader',
-            options: { plugins: [pxtorem, autoprefixer, cssnano] }
+            options: { plugins: [pxtorem, autoprefixer, cssnano] },
           },
           {
             loader: 'sass-loader',
             options: {
-              sourceMap: false
-            }
+              sourceMap: false,
+            },
           },
           {
             loader: 'sass-resources-loader',
             options: {
               resources: [
                 './src/assets/styles/variables.scss',
-                './src/assets/styles/breakpoints.scss'
-              ]
-            }
-          }
-        ]
-      }
-    ]
-  }
+                './src/assets/styles/breakpoints.scss',
+              ],
+            },
+          },
+        ],
+      },
+    ],
+  },
 })
